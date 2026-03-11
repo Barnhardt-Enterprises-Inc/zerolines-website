@@ -4,10 +4,12 @@ import { useState, FormEvent } from "react";
 
 type Status = "idle" | "loading" | "success" | "error";
 
-export default function EmailSignup() {
+export default function EmailSignup({ variant = "default" }: { variant?: "default" | "dark" }) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
+
+  const isDark = variant === "dark";
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -42,7 +44,11 @@ export default function EmailSignup() {
   if (status === "success") {
     return (
       <div className="text-center">
-        <p className="text-lg font-medium text-green-700 bg-green-50 border border-green-200 rounded-lg px-6 py-4">
+        <p className={`text-lg font-medium rounded-lg px-6 py-4 ${
+          isDark
+            ? "text-white bg-white/20 border border-white/30"
+            : "text-green-400 bg-green-950 border border-green-800"
+        }`}>
           You&apos;re on the list. We&apos;ll email you on launch day.
         </p>
       </div>
@@ -59,22 +65,30 @@ export default function EmailSignup() {
           placeholder="your@email.com"
           required
           disabled={status === "loading"}
-          className="flex-1 rounded-lg border border-gray-300 px-4 py-3 text-base text-gray-900 placeholder-gray-400 focus:border-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700/20 disabled:opacity-50"
+          className={`flex-1 rounded-lg px-4 py-3 text-base focus:outline-none focus:ring-2 disabled:opacity-50 ${
+            isDark
+              ? "border border-white/30 bg-white/10 text-white placeholder-blue-200 focus:border-white focus:ring-white/20"
+              : "border border-zinc-700 bg-zinc-900 text-white placeholder-zinc-500 focus:border-accent focus:ring-accent/20"
+          }`}
         />
         <button
           type="submit"
           disabled={status === "loading" || !email.trim()}
-          className="rounded-lg bg-blue-700 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+          className={`rounded-lg px-6 py-3 text-base font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap ${
+            isDark
+              ? "bg-white text-accent hover:bg-blue-50"
+              : "bg-accent text-white hover:bg-accent-hover"
+          }`}
         >
           {status === "loading" ? "Submitting..." : "Notify Me"}
         </button>
       </form>
 
       {status === "error" && (
-        <p className="mt-3 text-sm text-red-600">{message}</p>
+        <p className={`mt-3 text-sm ${isDark ? "text-red-200" : "text-red-400"}`}>{message}</p>
       )}
 
-      <p className="mt-4 text-sm text-gray-500 text-center">
+      <p className={`mt-4 text-sm text-center ${isDark ? "text-blue-200" : "text-muted"}`}>
         No spam. Just launch day notification and early access pricing.
       </p>
     </div>
