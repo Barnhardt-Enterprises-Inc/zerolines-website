@@ -1,26 +1,45 @@
+import Image from "next/image";
 import EmailSignup from "@/components/email-signup";
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-white text-gray-900">
       {/* Hero Section */}
-      <section className="px-6 pt-24 pb-20 text-center max-w-4xl mx-auto">
-        <p className="text-sm font-semibold tracking-widest text-blue-700 uppercase mb-6">
-          Coming April 21, 2026
-        </p>
-        <h1 className="text-6xl sm:text-7xl lg:text-8xl font-bold tracking-tight text-gray-900 leading-none mb-6">
-          Zero Lines<br />of Code
-        </h1>
-        <p className="text-xl sm:text-2xl text-gray-600 max-w-2xl mx-auto mb-4 leading-relaxed">
-          How a 45-Year Software Veteran Rebuilt a Production SaaS with AI
-        </p>
-        <p className="text-base text-gray-500 mb-10">By Glen Barnhardt</p>
-        <a
-          href="#signup"
-          className="inline-block rounded-lg bg-blue-700 px-8 py-4 text-lg font-semibold text-white transition-colors hover:bg-blue-800"
-        >
-          Get Notified at Launch
-        </a>
+      <section className="px-6 pt-24 pb-20 max-w-5xl mx-auto">
+        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+          {/* Book Cover */}
+          <div className="flex-shrink-0">
+            <div className="shadow-2xl rounded-sm overflow-hidden">
+              <Image
+                src="/book-cover.webp"
+                alt="Zero Lines of Code book cover"
+                width={380}
+                height={600}
+                priority
+                className="w-[280px] sm:w-[320px] lg:w-[380px] h-auto"
+              />
+            </div>
+          </div>
+          {/* Hero Text */}
+          <div className="text-center lg:text-left">
+            <p className="text-sm font-semibold tracking-widest text-blue-700 uppercase mb-6">
+              Coming April 21, 2026
+            </p>
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 leading-none mb-6">
+              Zero Lines<br />of Code
+            </h1>
+            <p className="text-xl sm:text-2xl text-gray-600 max-w-2xl mb-4 leading-relaxed">
+              How a 45-Year Software Veteran Rebuilt a Production SaaS with AI
+            </p>
+            <p className="text-base text-gray-500 mb-10">By Glen Barnhardt</p>
+            <a
+              href="#signup"
+              className="inline-block rounded-lg bg-blue-700 px-8 py-4 text-lg font-semibold text-white transition-colors hover:bg-blue-800"
+            >
+              Get Notified at Launch
+            </a>
+          </div>
+        </div>
       </section>
 
       {/* Divider */}
