@@ -16,10 +16,12 @@ Questions only the user or the reporter can answer go in a **Linear comment** �
 
 When the user says go:
 
-1. Implement it with tests. Run the verify command until it passes.
-2. Run `/code-review` and fix every real finding.
-3. **Team memory:** write down anything non-obvious you learned — a gotcha, a decision and its reason, an external API fact — where the next person will look: a comment beside the code, the right `docs/` file, or a one-line rule in CLAUDE.md. Fix or delete any doc the change made wrong.
-4. Commit, push, and open the PR titled `<type>(<scope>): <summary> [<TEAM>-<N>]`. The body: what changed and why, the verify result, and a `Docs:` line listing the docs you updated (or `none — nothing non-obvious`). Put the PR link in your reply.
+1. **Plan:** write the approved plan to `docs/plans/<TEAM>-<N>.md` (the ask, the files that change, the order of work, the tests that prove it) and commit it first. If the work departs from the plan, update the file in the same commit.
+2. **Bug fix:** first write a test that reproduces the bug, run it, and confirm it fails for the reported reason. Commit it on its own, then make it pass without editing that test.
+3. Implement it with tests. Run the verify command until it passes. Tests are code: strict TypeScript with typed fixtures and mocks (no `any`, no `as unknown as`, no `@ts-ignore`), exact-value assertions, and inside what the type check covers. A test for changed behavior is updated in the same commit as the behavior, never left red. Never weaken an authorization or safety assertion to make a test pass.
+4. Run `/code-review` and fix every real finding. The PR also gets an independent review in CI (`Claude Review`); address its comments before asking for merge.
+5. **Team memory:** write down anything non-obvious you learned — a gotcha, a decision and its reason, an external API fact — where the next person will look: a comment beside the code, the right `docs/` file, or a one-line rule in CLAUDE.md. Fix or delete any doc the change made wrong.
+6. Commit, push, and open the PR titled `<type>(<scope>): <summary> [<TEAM>-<N>]`. The body: a link to the plan file, what changed and why, the verify result, and a `Docs:` line listing the docs you updated (or `none — nothing non-obvious`). Put the PR link in your reply.
 
 ## Linear states
 
@@ -34,8 +36,8 @@ Linear's GitHub integration moves the issue itself when the PR opens (**AI: PR R
 | `/deploy production` ships it | `Deployed` |
 | The user has tested it in production | `Complete` — the user's call, never yours |
 
-A merged issue that comes back goes to `AI: Rework` and re-enters at step 3.
+A merged issue that comes back goes to `AI: Rework` and re-enters at step 3 of setup.
 
 ## What CLAUDE.md tells you
 
-The project's `## Quetrex` block names the Linear workspace and team key, the verify command, and the install command. If the block is missing, use `npm run verify` and `npm ci`, and say in your reply that CLAUDE.md doesn't declare them.
+The project's `## Quetrex` block names the Linear workspace and team key, the verify command, and the install command. If the block is missing, use `npm run verify` and `npm ci` when `package.json` has a `verify` script, and say in your reply that CLAUDE.md doesn't declare them. If the repo has no verify command at all, stop before implementing and say so: without one, lint, type and test failures reach the PR unchecked.
