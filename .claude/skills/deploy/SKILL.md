@@ -13,5 +13,5 @@ The mechanics differ per project; the rules don't. The procedure lives where CLA
 4. **Rollback tag** before every deploy (not before a rollback): `deploy/<env>/<UTC yyyymmdd-HHMMSS>` on HEAD, pushed. If the push fails, don't deploy.
 5. **Run the procedure's deploy or rollback steps** exactly. If a step fails, stop and report. Don't improvise past it.
 6. **Smoke test** the URLs the procedure lists and report each.
-7. **Linear** (production only): every `<TEAM>-N` in the commit subjects since the previous `deploy/production/*` tag moves from `Merged` to `Deployed`. Leave `Complete` alone; it's the user's. An issue in some other state: say so, don't force it.
+7. **Linear** (every deploy, not a rollback): every `<TEAM>-N` in the commit subjects since the previous `deploy/<env>/*` tag moves from `Merged` to `Deployed` and gets the environment label (`Staging` or `Production`), in the same step. Leave `Complete` alone; it's the user's. An issue in some other state: say so, don't force it.
 8. **Report** in a few lines: environment, action, tag, smoke result, issues moved. After a failed production smoke test, tell the user `/deploy rollback production` exists.
