@@ -4,8 +4,16 @@
 name: Claude Review
 
 on:
+  # `synchronize` was removed 2026-11-19 to cut model usage, matching marketing51-glori since
+  # 2026-11-12. It fired a full review on EVERY push to an open PR; `cancel-in-progress` below
+  # bounded that (a rapid follow-up push cancels the previous run) but every settled push still
+  # paid for a complete review, so a PR pushed to six times paid up to six times to review
+  # substantially the same diff.
+  # A review still runs when the PR is opened, reopened, or marked ready for review.
+  # To re-review after pushing a fix: re-run the `review` job from the Actions tab, or convert
+  # the PR to draft and back to ready. Do not re-add `synchronize` without a usage budget for it.
   pull_request:
-    types: [opened, synchronize, ready_for_review, reopened]
+    types: [opened, ready_for_review, reopened]
 
 concurrency:
   group: claude-review-${{ github.event.pull_request.number }}
